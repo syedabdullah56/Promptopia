@@ -1,7 +1,7 @@
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
 
-export const GET = async (request) => {
+export const GET = async () => {    //No need of request it is giving error in vercel defined but never use
     try {
         await connectToDB();
         const prompts = await Prompt.find({}).populate("creator");
