@@ -1,9 +1,9 @@
 
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
-import { ObjectId } from 'mongoose';  
+// import { ObjectId } from 'mongoose';  
 //GET
-export const GET = async (request,{params}) => {
+export const GET = async ({params}) => {   //no need of request here it is giving error in vercel defined but never use
     try {
         await connectToDB();
         const prompt = await Prompt.findById(params.id).populate("creator");

@@ -1,5 +1,5 @@
 import Feed from "@components/Feed";
-import { features } from "process";
+// import { features } from "process";
 //If we see an underscore in any utility class then it means it comes from our global.css
 const Home = () => {
   //More features coming soon
