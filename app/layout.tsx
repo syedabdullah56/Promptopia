@@ -1,7 +1,7 @@
 import '@styles/global.css';
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
-import { Session } from "next-auth"; // Import Session type from NextAuth
+import { ReactNode } from "react";
 
 // Define the metadata
 export const metadata = {
@@ -11,15 +11,15 @@ export const metadata = {
 
 // Define the props type
 interface RootLayoutProps {
-  children: React.ReactNode; // Specify that children can be any renderable React node
-  session?: Session | null; // Optional: if your Provider requires a session prop
+  children: ReactNode; // Specify that children can be any renderable React node
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
+// Remove session from the props if it's not required
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <Provider session={session}> {/* Pass the session prop here if needed */}
+        <Provider> {/* Removed session if not needed */}
           <div className="main">
             <div className='gradient' />
           </div>
