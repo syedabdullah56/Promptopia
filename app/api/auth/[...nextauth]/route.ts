@@ -1,4 +1,4 @@
-import NextAuth, { Session, Profile } from "next-auth";
+import NextAuth, { Session, Profile, User as NextAuthUser } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
@@ -12,6 +12,10 @@ declare module "next-auth" {
             name: string;
             image: string;
         };
+    }
+
+    interface Profile {
+        picture?: string; // Add picture property as optional
     }
 }
 
@@ -33,7 +37,6 @@ const handler = NextAuth({
                 });
 
                 if (sessionUser) {
-                    // Extend the session user to include id
                     session.user.id = sessionUser._id.toString();
                 }
 
@@ -44,7 +47,15 @@ const handler = NextAuth({
             }
         },
 
-        async signIn({ profile }: { profile: Profile | null }) {
+        async signIn(params: {
+            user: NextAuthUser;
+            account: Account | null;
+            profile?: Profile;
+            email?: { verificationRequest?: boolean; } | undefined;
+            credentials?: Record<string, unknown> | undefined;
+        }) {
+            const { profile } = params; // Destructure profile from params
+
             try {
                 // Check if profile exists and has email
                 if (!profile || !profile.email) {
