@@ -15,7 +15,7 @@ interface RootLayoutProps {
   session: Session | null; // Use the Session type; it can be null if not authenticated
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
+const RootLayout = ({ children, session }: RootLayoutProps) => { // Specify props directly in function signature
   return (
     <html lang="en">
       <body>
@@ -34,4 +34,4 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
   );
 }
 
-export default RootLayout;
+export default RootLayout; // Ensure you're exporting the component, not the type
