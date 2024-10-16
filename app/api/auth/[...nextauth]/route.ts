@@ -1,4 +1,4 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth, { Session, Profile } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
@@ -44,7 +44,7 @@ const handler = NextAuth({
             }
         },
 
-        async signIn({ profile }) {
+        async signIn({ profile }: { profile: Profile | null }) {
             try {
                 // Check if profile exists and has email
                 if (!profile || !profile.email) {
@@ -61,9 +61,8 @@ const handler = NextAuth({
 
                 // If not, create a new user
                 if (!userExists) {
-                    // Check if profile.name and profile.picture are defined
                     const username = profile.name ? profile.name.replace(" ", "").toLowerCase() : "user"; // Fallback to 'user' if name is undefined
-                    const image = profile.picture || ""; // Fallback to empty string if picture is undefined
+                    const image = profile.picture || ""; // Safely access picture now
 
                     await User.create({
                         email: profile.email,
