@@ -7,14 +7,14 @@ import User from "@models/user";
 const handler = NextAuth({
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: process.env.GOOGLE_ID||"",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET||"",
         }),
     ],
 
     callbacks: {
         // Session callback
-        async session({ session }: { session}) {
+        async session({ session }: { session:any}) {
             if (session?.user?.email) {
                 const sessionUser = await User.findOne({
                     email: session.user.email,
