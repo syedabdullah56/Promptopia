@@ -7,23 +7,37 @@ import User from "@models/user";
 const handler=NextAuth({
     providers:[
         GoogleProvider({
-            clientId:process.env.GOOGLE_ID||"",
-            clientSecret:process.env.GOOGLE_CLIENT_SECRET||"",
+            clientId:process.env.GOOGLE_ID,
+            clientSecret:process.env.GOOGLE_CLIENT_SECRET,
 
         })
     ],
 
     callbacks:{
-        async session({session}){
-            const sessionUser=await User.findOne({
-                email:session.user.email,
+        // async session({session}){
+        //     const sessionUser=await User.findOne({
+        //         email:session.user.email,
     
-            })
+        //     })
     
-            session.user.id=sessionUser._id.toString();
+        //     session.user.id=sessionUser._id.toString();
     
-            return session;
-        },
+        //     return session;
+        // },
+
+        async session({ session }: { session: any }) {
+            if (session?.user?.email) { // Check if session, session.user, and session.user.email exist
+              const sessionUser = await User.findOne({
+                email: session.user.email, // Safe to access now
+              });
+          
+              // Further logic after finding the user
+            } else {
+              // Handle case where session or session.user is undefined
+              console.warn("Session or user email is undefined");
+            }
+          }
+          
         async signIn({profile}){
             try {
                 await connectToDB();
