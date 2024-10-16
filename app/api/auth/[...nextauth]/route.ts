@@ -27,14 +27,14 @@ const handler = NextAuth({
         async session({ session }: { session: Session }) {
             if (session?.user?.email) {
                 await connectToDB();
-                
+
                 const sessionUser = await User.findOne({
                     email: session.user.email,
                 });
 
                 if (sessionUser) {
                     // Extend the session user to include id
-                    session.user.id = sessionUser._id.toString(); 
+                    session.user.id = sessionUser._id.toString();
                 }
 
                 return session;
@@ -46,6 +46,12 @@ const handler = NextAuth({
 
         async signIn({ profile }) {
             try {
+                // Check if profile exists
+                if (!profile || !profile.email) {
+                    console.warn("Profile or profile email is undefined");
+                    return false;
+                }
+
                 await connectToDB();
 
                 // Check if the user already exists
