@@ -1,4 +1,4 @@
-import NextAuth, { Session, Profile, User as NextAuthUser } from "next-auth";
+import NextAuth, { Session, Profile, User as NextAuthUser, Account } from "next-auth"; // Import Account type
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
@@ -49,7 +49,7 @@ const handler = NextAuth({
 
         async signIn(params: {
             user: NextAuthUser;
-            account: Account | null;
+            account: Account | null; // Now this should be recognized
             profile?: Profile;
             email?: { verificationRequest?: boolean; } | undefined;
             credentials?: Record<string, unknown> | undefined;
