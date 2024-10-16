@@ -1,9 +1,20 @@
-import NextAuth, { Session } from "next-auth"; // Import Session type
+import NextAuth, { Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
 
-// next auth js to study about this:
+// Extend the NextAuth Session type to include user id
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            email: string;
+            name: string;
+            image: string;
+        };
+    }
+}
+
 const handler = NextAuth({
     providers: [
         GoogleProvider({
@@ -13,19 +24,23 @@ const handler = NextAuth({
     ],
 
     callbacks: {
-        // Session callback
-        async session({ session }: { session: Session }) { // Use Session type here
+        async session({ session }: { session: Session }) {
             if (session?.user?.email) {
+                await connectToDB();
+                
                 const sessionUser = await User.findOne({
                     email: session.user.email,
                 });
 
-                session.user.id = sessionUser._id.toString();
+                if (sessionUser) {
+                    // Extend the session user to include id
+                    session.user.id = sessionUser._id.toString(); 
+                }
 
                 return session;
             } else {
                 console.warn("Session or user email is undefined");
-                return session; // Ensure you always return session
+                return session;
             }
         },
 
