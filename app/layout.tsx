@@ -1,6 +1,7 @@
 import '@styles/global.css';
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import { Session } from "next-auth"; // Import Session type from NextAuth
 
 // Define the metadata
 export const metadata = {
@@ -11,7 +12,7 @@ export const metadata = {
 // Define the props type
 interface RootLayoutProps {
   children: React.ReactNode; // Specify that children can be any renderable React node
-  session: any; // You can replace 'any' with the appropriate type for session
+  session: Session | null; // Use the Session type; it can be null if not authenticated
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
