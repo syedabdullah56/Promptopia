@@ -6,20 +6,20 @@ import { Session } from "next-auth"; // Import Session type from NextAuth
 // Define the metadata
 export const metadata = {
   title: 'Promptopia',
-  description: 'Discover & Share AI Prompts'
-}
+  description: 'Discover & Share AI Prompts',
+};
 
 // Define the props type
 interface RootLayoutProps {
   children: React.ReactNode; // Specify that children can be any renderable React node
-  session: Session | null; // Use the Session type; it can be null if not authenticated
+  session: Session | null; // Optional: adjust if you don't have session
 }
 
-const RootLayout = ({ children, session }: RootLayoutProps) => { // Specify props directly in function signature
+const RootLayout = ({ children, session }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body>
-        <Provider session={session}> {/* Pass the session prop here */}
+        <Provider session={session}> {/* Pass the session prop here if needed */}
           <div className="main">
             <div className='gradient' />
           </div>
@@ -32,6 +32,7 @@ const RootLayout = ({ children, session }: RootLayoutProps) => { // Specify prop
       </body>
     </html>
   );
-}
+};
 
-export default RootLayout; // Ensure you're exporting the component, not the type
+// Correctly export the component
+export default RootLayout;
