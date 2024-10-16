@@ -11,13 +11,14 @@ export const metadata = {
 // Define the props type
 interface RootLayoutProps {
   children: React.ReactNode; // Specify that children can be any renderable React node
+  session: any; // You can replace 'any' with the appropriate type for session
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
   return (
     <html lang="en">
       <body>
-        <Provider>
+        <Provider session={session}> {/* Pass the session prop here */}
           <div className="main">
             <div className='gradient' />
           </div>
