@@ -1,32 +1,35 @@
-import '@styles/global.css'
+import '@styles/global.css';
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
 
-export const metadata={
-  title:'Promptopia',
-  description:'Discover & Share AI Prompts'
+// Define the metadata
+export const metadata = {
+  title: 'Promptopia',
+  description: 'Discover & Share AI Prompts'
 }
 
-const RootLayout = ({children}) => {
+// Define the props type
+interface RootLayoutProps {
+  children: React.ReactNode; // Specify that children can be any renderable React node
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-      <html lang="en">
-           <body>
-            <Provider>
-            <div className="main">
-              <div className='gradient'/>
-            </div>
+    <html lang="en">
+      <body>
+        <Provider>
+          <div className="main">
+            <div className='gradient' />
+          </div>
 
-            <main className="app">
-              <Nav/>
-              {children}
-            </main>
-            </Provider>
-         
-
-
-           </body>
-      </html>
-  )
+          <main className="app">
+            <Nav />
+            {children}
+          </main>
+        </Provider>
+      </body>
+    </html>
+  );
 }
 
 export default RootLayout;
