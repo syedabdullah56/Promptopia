@@ -1,20 +1,20 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth"; // Import Session type
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
 
-//next auth js to study about this:
+// next auth js to study about this:
 const handler = NextAuth({
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_ID||"",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET||"",
+            clientId: process.env.GOOGLE_ID || "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
         }),
     ],
 
     callbacks: {
         // Session callback
-        async session({ session }: { session:any}) {
+        async session({ session }: { session: Session }) { // Use Session type here
             if (session?.user?.email) {
                 const sessionUser = await User.findOne({
                     email: session.user.email,
@@ -25,10 +25,10 @@ const handler = NextAuth({
                 return session;
             } else {
                 console.warn("Session or user email is undefined");
+                return session; // Ensure you always return session
             }
         },
 
-        // Make sure to add a comma here
         async signIn({ profile }) {
             try {
                 await connectToDB();
