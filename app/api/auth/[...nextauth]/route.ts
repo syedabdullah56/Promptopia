@@ -7,7 +7,7 @@ import User from "@models/user";
 declare module "next-auth" {
     interface Session {
         user: {
-            id: string;
+            id: string; // Added id property to user
             email: string;
             name: string;
             image: string;
@@ -46,10 +46,10 @@ const handler = NextAuth({
 
         async signIn({ profile }) {
             try {
-                // Check if profile exists
+                // Check if profile exists and has email
                 if (!profile || !profile.email) {
                     console.warn("Profile or profile email is undefined");
-                    return false;
+                    return false; // Reject sign in
                 }
 
                 await connectToDB();
@@ -61,17 +61,21 @@ const handler = NextAuth({
 
                 // If not, create a new user
                 if (!userExists) {
+                    // Check if profile.name and profile.picture are defined
+                    const username = profile.name ? profile.name.replace(" ", "").toLowerCase() : "user"; // Fallback to 'user' if name is undefined
+                    const image = profile.picture || ""; // Fallback to empty string if picture is undefined
+
                     await User.create({
                         email: profile.email,
-                        username: profile.name.replace(" ", "").toLowerCase(),
-                        image: profile.picture,
+                        username: username,
+                        image: image,
                     });
                 }
 
                 return true;
             } catch (error) {
-                console.log(error);
-                return false;
+                console.error("Error during sign in:", error);
+                return false; // Handle error
             }
         }
     }
