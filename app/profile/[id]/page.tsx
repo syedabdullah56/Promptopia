@@ -2,10 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
 import Profile from "@components/Profile";
 
-const UserProfile = ({ params }) => {
+// Define the type for params
+interface Params {
+  id: string; // or adjust to the appropriate type
+}
+
+// Define the props type
+interface UserProfileProps {
+  params: Params;
+}
+
+const UserProfile: React.FC<UserProfileProps> = ({ params }) => {
   const searchParams = useSearchParams();
   const userName = searchParams.get("name");
 
@@ -13,13 +22,12 @@ const UserProfile = ({ params }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${params?.id}/posts`);
+      const response = await fetch(`/api/users/${params.id}/posts`);
       const data = await response.json();
-
       setUserPosts(data);
     };
 
-    if (params?.id) fetchPosts();
+    if (params.id) fetchPosts();
   }, [params.id]);
 
   return (
