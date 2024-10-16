@@ -12,10 +12,10 @@ export const metadata = {
 // Define the props type
 interface RootLayoutProps {
   children: React.ReactNode; // Specify that children can be any renderable React node
-  session: Session | null; // Optional: adjust if you don't have session
+  session?: Session | null; // Optional: if your Provider requires a session prop
 }
 
-const RootLayout = ({ children, session }: RootLayoutProps) => {
+const RootLayout: React.FC<RootLayoutProps> = ({ children, session }) => {
   return (
     <html lang="en">
       <body>
@@ -34,5 +34,5 @@ const RootLayout = ({ children, session }: RootLayoutProps) => {
   );
 };
 
-// Correctly export the component
+// Ensure you export the component itself
 export default RootLayout;
